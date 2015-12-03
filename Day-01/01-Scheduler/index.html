@@ -11,8 +11,18 @@
             btnDoWork.addEventListener("click", onBtnDoWorkClick);
         }
         function onBtnDoWorkClick(){
-            displayMessage("Work Started..");
-            setTimeout(triggerWork);
+            /*displayMessage("Work Started..");
+            setTimeout(triggerWork);*/
+            new Worker('worker.js');
+            triggerWorkNew();
+        }
+        function triggerWorkNew(){
+            for(var i=0; i<10000; i++)
+                for(var j=0; j<10000; j++)
+                    for(var k=0; k<100; k++){
+
+                    }
+            console.log('looping done');
         }
         function triggerWork(){
             doWork(onWorkComplete, onWorkProgress);
