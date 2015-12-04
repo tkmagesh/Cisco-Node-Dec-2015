@@ -7,26 +7,26 @@ function isStatic(resourcePath){
     return staticExtns.indexOf(extn) !== -1;
 }
 
-module.exports = function(req, res, next){
-    if (isStatic(req.url.pathname)){
-        var resource = path.join(__dirname, req.url.pathname);
-        if (fs.existsSync(resource)){
-            //fs.createReadStream(resource).pipe(res);
-            console.log('beginnig serveStatic');
-            var stream = fs.createReadStream(resource);
-            stream.on('data', function(chunk){
-                res.write(chunk);
-            });
-            stream.on('end', function(){
+module.exports = function(staticResourcePath){
+    return function(req, res, next){
+        if (isStatic(req.url.pathname)){
+            var resource = path.join(staticResourcePath, req.url.pathname);
+            if (fs.existsSync(resource)){
+                //fs.createReadStream(resource).pipe(res);
+                var stream = fs.createReadStream(resource);
+                stream.on('data', function(chunk){
+                    res.write(chunk);
+                });
+                stream.on('end', function(){
+                    res.end();
+                    //next()
+                })
+            } else {
+                res.statusCode = 404;
                 res.end();
-                console.log('ending serveStatic');
-                //next()
-            })
+            }
         } else {
-            res.statusCode = 404;
-            res.end();
+            next();
         }
-    } else {
-        next();
     }
-}
+};
