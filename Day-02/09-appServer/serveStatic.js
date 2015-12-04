@@ -7,7 +7,7 @@ function isStatic(resourcePath){
     return staticExtns.indexOf(extn) !== -1;
 }
 
-module.exports = function(req, res){
+module.exports = function(req, res, next){
     if (isStatic(req.url.pathname)){
         var resource = path.join(__dirname, req.url.pathname);
         if (fs.existsSync(resource)){
@@ -20,10 +20,13 @@ module.exports = function(req, res){
             stream.on('end', function(){
                 res.end();
                 console.log('ending serveStatic');
+                //next()
             })
         } else {
             res.statusCode = 404;
             res.end();
         }
+    } else {
+        next();
     }
 }
