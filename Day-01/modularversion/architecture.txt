@@ -1,0 +1,15 @@
+OK so my app is currently having code to 
+run a server
+If a request comes to it based on the url it needs to do processing
+if(URL is out of certain formats like html, json etc)
+it uses file stream to read and directly write.
+
+For this situation the data is 
+
+the url 
+get the url object
+from it find the pathname see if it is valid html or file name
+even if it is valid file name 
+we need to check if file exist fs needs full path
+
+path.join(__dirname,pathname)
